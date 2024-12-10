@@ -21,7 +21,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := opencv_imgproc
 LOCAL_SRC_FILES := lib/$(TARGET_ARCH_ABI)/libopencv_imgproc.so
-LOCAL_SHARED_LIBRARIES := opencv_core 
+LOCAL_SHARED_LIBRARIES := opencv_core
 include $(PREBUILT_SHARED_LIBRARY)
 
 endif
@@ -36,7 +36,7 @@ ifneq (,$(filter $(TARGET_ARCH_ABI),armeabi-v7a x86 arm64-v8a x86_64))
 
 LOCAL_MODULE := cardioRecognizer
 LOCAL_LDLIBS := -llog -L$(SYSROOT)/usr/lib -lz -ljnigraphics
-LOCAL_SHARED_LIBRARIES := cpufeatures opencv_imgproc opencv_core 
+LOCAL_SHARED_LIBRARIES := cpufeatures opencv_core opencv_imgproc
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(LOCAL_DMZ_DIR) $(LOCAL_PATH)/$(LOCAL_DMZ_DIR)/cv
 LOCAL_SRC_FILES := $(LOCAL_DMZ_DIR)/dmz_all.cpp nativeRecognizer.cpp
@@ -53,36 +53,6 @@ LOCAL_CFLAGS += -DANDROID_HAS_NEON=0 ## 64-bit changed register names - requires
 endif
 
 include $(BUILD_SHARED_LIBRARY)
-endif
-
-endif
-
-# build tegra compatible lib
-# (no neon, limit to 16 VFP registers)
-
-ifeq (1,1)
-
-include $(CLEAR_VARS)
-ifneq (,$(filter $(TARGET_ARCH_ABI),armeabi-v7a x86 arm64-v8a x86_64))
-
-LOCAL_MODULE := cardioRecognizer_tegra2
-LOCAL_LDLIBS := -llog -L$(SYSROOT)/usr/lib -lz -ljnigraphics
-LOCAL_SHARED_LIBRARIES := cpufeatures opencv_imgproc opencv_core 
-
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(LOCAL_DMZ_DIR) $(LOCAL_PATH)/$(LOCAL_DMZ_DIR)/cv
-LOCAL_SRC_FILES := $(LOCAL_DMZ_DIR)/dmz_all.cpp nativeRecognizer.cpp
-
-ifeq ($(TARGET_ARCH_ABI), x86) #we're generating an empty libcardioRecognizer_tegra2.so for x86 devices, so the list of .so files is the same for armeabi-v7a and x86 folders. This is to avoid any fallback to arm versions.
-LOCAL_C_INCLUDES :=
-LOCAL_SRC_FILES :=
-endif
-
-# Note: setting -mfloat-abi=hard will generate libs that cannot be linked with built in Android ones. So don't.
-LOCAL_CPPFLAGS := -DANDROID_HAS_NEON=0 -mfpu=vfpv3-d16
-LOCAL_ARM_NEON := false
-
-include $(BUILD_SHARED_LIBRARY)
-
 endif
 
 endif

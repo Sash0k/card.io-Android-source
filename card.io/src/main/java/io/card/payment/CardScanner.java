@@ -118,7 +118,7 @@ class CardScanner implements Camera.PreviewCallback, Camera.AutoFocusCallback,
     // ------------------------------------------------------------------------
 
     static {
-        Log.i(Util.PUBLIC_LOG_TAG, "card.io " + BuildConfig.VERSION_NAME);
+        Log.i(Util.PUBLIC_LOG_TAG, "card.io " + BuildConfig.CARD_IO_SDK_VERSION);
 
         try {
             loadLibrary("cardioDecider");
@@ -129,19 +129,8 @@ class CardScanner implements Camera.PreviewCallback, Camera.AutoFocusCallback,
 
             if (usesSupportedProcessorArch()) {
                 loadLibrary("opencv_core");
-                Log.d(Util.PUBLIC_LOG_TAG, "Loaded opencv core library");
                 loadLibrary("opencv_imgproc");
-                Log.d(Util.PUBLIC_LOG_TAG, "Loaded opencv imgproc library");
-            }
-            if (nUseNeon()) {
                 loadLibrary("cardioRecognizer");
-                Log.i(Util.PUBLIC_LOG_TAG, "Loaded card.io NEON library");
-            } else if (nUseX86()) {
-                loadLibrary("cardioRecognizer");
-                Log.i(Util.PUBLIC_LOG_TAG, "Loaded card.io x86 library");
-            } else if (nUseTegra()) {
-                loadLibrary("cardioRecognizer_tegra2");
-                Log.i(Util.PUBLIC_LOG_TAG, "Loaded card.io Tegra2 library");
             } else {
                 Log.w(Util.PUBLIC_LOG_TAG,
                         "unsupported processor - card.io scanning requires ARMv7 or x86 architecture");

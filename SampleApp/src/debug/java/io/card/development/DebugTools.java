@@ -3,8 +3,6 @@ package io.card.development;
 import android.app.Application;
 import android.os.StrictMode;
 
-import com.squareup.leakcanary.LeakCanary;
-
 public class DebugTools {
 
     public static void setup(Application application) {
@@ -21,7 +19,5 @@ public class DebugTools {
                 .penaltyLog()
                 .penaltyDeath()
                 .build());
-
-        LeakCanary.install(application);
     }
 }
