@@ -1,6 +1,11 @@
 card.io Android SDK change log and release notes
 ================================================
 
+5.5.1-OS2
+----
+* Use default back navigation, to support predictive back in Android 13+.
+* Fix for Edge-to-Edge in Android 15+.
+
 5.5.1-OS1
 ----
 * Support 16KB page size devices - [PR #1](https://github.com/OutSystems/card.io-Android-source/pull/1)
