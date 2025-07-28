@@ -409,6 +409,8 @@ public final class DataEntryActivity extends Activity implements TextWatcher {
 
         setContentView(container);
 
+        ActivityHelper.setEdgeToEdge(this);
+
         Drawable icon = null;
         boolean usePayPalActionBarIcon = getIntent().getBooleanExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, true);
         if (usePayPalActionBarIcon) {

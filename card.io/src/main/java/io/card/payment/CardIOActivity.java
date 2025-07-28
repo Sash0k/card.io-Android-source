@@ -39,6 +39,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
+
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.util.Date;
@@ -55,7 +57,7 @@ import io.card.payment.ui.ViewUtil;
  *
  * @version 1.0
  */
-public final class CardIOActivity extends Activity {
+public final class CardIOActivity extends ComponentActivity {
     /**
      * Boolean extra. Optional. Defaults to <code>false</code>. If set, the card will not be scanned
      * with the camera.
@@ -1013,6 +1015,8 @@ public final class CardIOActivity extends Activity {
         }
 
         this.setContentView(mMainLayout);
+
+        ViewUtil.setSystemBarInsets(mMainLayout);
     }
 
     private void rotateCustomOverlay(float degrees) {

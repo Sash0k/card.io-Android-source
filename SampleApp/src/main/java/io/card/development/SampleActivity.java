@@ -28,6 +28,7 @@ import io.card.payment.CreditCard;
 import io.card.payment.i18n.StringKey;
 import io.card.payment.i18n.SupportedLocale;
 import io.card.payment.i18n.locales.LocalizedStringsList;
+import io.card.payment.ui.ActivityHelper;
 
 public class SampleActivity extends Activity {
 
@@ -64,34 +65,35 @@ public class SampleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_activity);
 
-        mManualToggle = (CheckBox) findViewById(R.id.force_manual);
-        mEnableExpiryToggle = (CheckBox) findViewById(R.id.gather_expiry);
-        mScanExpiryToggle = (CheckBox) findViewById(R.id.scan_expiry);
-        mCvvToggle = (CheckBox) findViewById(R.id.gather_cvv);
-        mPostalCodeToggle = (CheckBox) findViewById(R.id.gather_postal_code);
-        mPostalCodeNumericOnlyToggle = (CheckBox) findViewById(R.id.postal_code_numeric_only);
-        mCardholderNameToggle = (CheckBox) findViewById(R.id.gather_cardholder_name);
-        mSuppressManualToggle = (CheckBox) findViewById(R.id.suppress_manual);
-        mSuppressConfirmationToggle = (CheckBox) findViewById(R.id.suppress_confirmation);
-        mSuppressScanToggle = (CheckBox) findViewById(R.id.detect_only);
+        mManualToggle = findViewById(R.id.force_manual);
+        mEnableExpiryToggle = findViewById(R.id.gather_expiry);
+        mScanExpiryToggle = findViewById(R.id.scan_expiry);
+        mCvvToggle = findViewById(R.id.gather_cvv);
+        mPostalCodeToggle = findViewById(R.id.gather_postal_code);
+        mPostalCodeNumericOnlyToggle = findViewById(R.id.postal_code_numeric_only);
+        mCardholderNameToggle = findViewById(R.id.gather_cardholder_name);
+        mSuppressManualToggle = findViewById(R.id.suppress_manual);
+        mSuppressConfirmationToggle = findViewById(R.id.suppress_confirmation);
+        mSuppressScanToggle = findViewById(R.id.detect_only);
 
-        mUseCardIOLogoToggle = (CheckBox) findViewById(R.id.use_card_io_logo);
-        mShowPayPalActionBarIconToggle = (CheckBox) findViewById(R.id.show_paypal_action_bar_icon);
-        mKeepApplicationThemeToggle = (CheckBox) findViewById(R.id.keep_application_theme);
+        mUseCardIOLogoToggle = findViewById(R.id.use_card_io_logo);
+        mShowPayPalActionBarIconToggle = findViewById(R.id.show_paypal_action_bar_icon);
+        mKeepApplicationThemeToggle = findViewById(R.id.keep_application_theme);
 
-        mLanguageSpinner = (Spinner) findViewById(R.id.language);
-        mUnblurEdit = (EditText) findViewById(R.id.unblur);
+        mLanguageSpinner = findViewById(R.id.language);
+        mUnblurEdit = findViewById(R.id.unblur);
 
-        mResultLabel = (TextView) findViewById(R.id.result);
-        mResultImage = (ImageView) findViewById(R.id.result_image);
-        mResultCardTypeImage = (ImageView) findViewById(R.id.result_card_type_image);
+        mResultLabel = findViewById(R.id.result);
+        mResultImage = findViewById(R.id.result_image);
+        mResultCardTypeImage = findViewById(R.id.result_card_type_image);
 
-        TextView version = (TextView) findViewById(R.id.version);
-        version.setText("card.io library: " + CardIOActivity.sdkVersion() + "\n" +
-                "Build date: " + CardIOActivity.sdkBuildDate());
+        TextView version = findViewById(R.id.version);
+        version.setText("card.io library: " + CardIOActivity.sdkVersion());
 
         setScanExpiryEnabled();
         setupLanguageList();
+
+        ActivityHelper.setEdgeToEdge(this);
     }
 
     private void setScanExpiryEnabled() {
@@ -157,7 +159,7 @@ public class SampleActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.v(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 
-        String outStr = new String();
+        String outStr = "";
         Bitmap cardTypeImage = null;
 
         if ((requestCode == REQUEST_SCAN || requestCode == REQUEST_AUTOTEST) && data != null
@@ -190,12 +192,7 @@ public class SampleActivity extends Activity {
 
             if (autotestMode) {
                 numAutotestsPassed++;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        onAutotest(null);
-                    }
-                }, 500);
+                new Handler().postDelayed(() -> onAutotest(null), 500);
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
             autotestMode = false;

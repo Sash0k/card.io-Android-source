@@ -9,12 +9,17 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -159,5 +164,34 @@ public class ViewUtil {
             button.setTextSize(Appearance.TEXT_SIZE_BUTTON);
             button.setTypeface(Appearance.TYPEFACE_BUTTON);
         }
+    }
+
+    /**
+     * Sets system bar insets padding to a view.
+     * This is particularly useful for Edge-To-Edge changes in Android 15 and higher.
+     * Note that insets are only applied if they're non-zero.
+     * This is to avoid an issue where when navigating back, the window insets listener is called with 0 values for all sides.
+     *
+     * @param view the Android View to apply insets padding to
+     */
+    public static void setSystemBarInsets(View view) {
+        ViewCompat.setOnApplyWindowInsetsListener(
+                view,
+                (v, insets) -> {
+                    Insets systemBarInsets = insets.getInsets(
+                            WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime()
+                    );
+                    Log.e("systemBarInsets", "Entered - " + view + systemBarInsets);
+                    if (systemBarInsets.left != 0 || systemBarInsets.right != 0 || systemBarInsets.top != 0 || systemBarInsets.bottom != 0) {
+                        v.setPadding(
+                                systemBarInsets.left,
+                                systemBarInsets.top,
+                                systemBarInsets.right,
+                                systemBarInsets.bottom
+                        );
+                    }
+                    return insets;
+                }
+        );
     }
 }
