@@ -4,7 +4,6 @@ package io.card.payment;
  * See the file "LICENSE.md" for the full license governing this code.
  */
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -28,6 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.activity.ComponentActivity;
+
 import io.card.payment.i18n.LocalizedStrings;
 import io.card.payment.i18n.StringKey;
 import io.card.payment.ui.ActivityHelper;
@@ -39,7 +40,7 @@ import io.card.payment.ui.ViewUtil;
  *
  * @version 2.0
  */
-public final class DataEntryActivity extends Activity implements TextWatcher {
+public final class DataEntryActivity extends ComponentActivity implements TextWatcher {
 
     /**
      * PayPal REST Apis only handle max 20 chars postal code, so we'll do the same here.
@@ -425,6 +426,8 @@ public final class DataEntryActivity extends Activity implements TextWatcher {
 
         ActivityHelper.setupActionBarIfSupported(this, activityTitleTextView,
                 LocalizedStrings.getString(StringKey.MANUAL_ENTRY_TITLE), "card.io - ", icon);
+
+        //ActivityHelper.setBackNavigationListener(this, this::onBackNavigation);
     }
 
     private void completed() {
@@ -446,12 +449,6 @@ public final class DataEntryActivity extends Activity implements TextWatcher {
                     getIntent().getByteArrayExtra(CardIOActivity.EXTRA_CAPTURED_CARD_IMAGE));
         }
         DataEntryActivity.this.setResult(CardIOActivity.RESULT_CARD_INFO, dataIntent);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        DataEntryActivity.this.setResult(CardIOActivity.RESULT_ENTRY_CANCELED);
         finish();
     }
 

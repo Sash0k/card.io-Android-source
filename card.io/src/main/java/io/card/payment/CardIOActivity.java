@@ -236,12 +236,6 @@ public final class CardIOActivity extends ComponentActivity {
     public static final int RESULT_CARD_INFO = lastResult++;
 
     /**
-     * result code supplied to {@link Activity#onActivityResult(int, int, Intent)} when the user presses the cancel
-     * button.
-     */
-    public static final int RESULT_ENTRY_CANCELED = lastResult++;
-
-    /**
      * result code indicating that scan is not available. Only returned when
      * {@link #EXTRA_SUPPRESS_MANUAL_ENTRY} is set and scanning is not available.
      * <br><br>
@@ -634,7 +628,7 @@ public final class CardIOActivity extends ComponentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == DATA_ENTRY_REQUEST_ID) {
-            if (resultCode == RESULT_CARD_INFO || resultCode == RESULT_ENTRY_CANCELED
+            if (resultCode == RESULT_CARD_INFO || resultCode == Activity.RESULT_CANCELED
                     || manualEntryFallbackOrForced) {
                 setResultAndFinish(resultCode, data);
             } else {
@@ -642,25 +636,6 @@ public final class CardIOActivity extends ComponentActivity {
                     mUIBar.setVisibility(View.VISIBLE);
                 }
             }
-        }
-    }
-
-    /**
-     * This {@link android.app.Activity} overrides back button handling to handle back presses properly given the
-     * various states this {@link android.app.Activity} can be in.
-     * <br><br>
-     * This method is called by Android, never directly by application code.
-     */
-    @Override
-    public void onBackPressed() {
-        if (!manualEntryFallbackOrForced && mOverlay.isAnimating()) {
-            try {
-                restartPreview();
-            } catch (RuntimeException re) {
-                Log.w(TAG, "*** could not return to preview: " + re);
-            }
-        } else if (mCardScanner != null) {
-            super.onBackPressed();
         }
     }
 

@@ -94,7 +94,6 @@ class OverlayView extends View {
     private Rect mGuide;
     private CreditCard mDetectedCard;
     private int mRotation;
-    private int mState;
     private int guideColor;
 
     private boolean hideCardIOLogo;
@@ -467,10 +466,6 @@ class OverlayView extends View {
             int xOffset = (int) (mDetectedCard.xoff[i] * sf);
             bc.drawText("" + mDetectedCard.cardNumber.charAt(i), xOffset, yOffset, paint);
         }
-    }
-
-    public boolean isAnimating() {
-        return (mState != 0);
     }
 
     public void setCameraPreviewRect(Rect rect) {
