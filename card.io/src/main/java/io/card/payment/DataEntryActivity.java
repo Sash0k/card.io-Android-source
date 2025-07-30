@@ -426,8 +426,6 @@ public final class DataEntryActivity extends ComponentActivity implements TextWa
 
         ActivityHelper.setupActionBarIfSupported(this, activityTitleTextView,
                 LocalizedStrings.getString(StringKey.MANUAL_ENTRY_TITLE), "card.io - ", icon);
-
-        //ActivityHelper.setBackNavigationListener(this, this::onBackNavigation);
     }
 
     private void completed() {
