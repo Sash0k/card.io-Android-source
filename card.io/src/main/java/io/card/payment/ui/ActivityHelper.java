@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -128,6 +129,20 @@ public class ActivityHelper {
             // Prevent screenshots; FLAG_SECURE is restricted to HoneyComb and above to prevent issues with some Samsung handsets
             // Please see http://stackoverflow.com/questions/9822076/how-do-i-prevent-android-taking-a-screenshot-when-my-app-goes-to-the-background
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
+    }
+
+    /**
+     * Set the activity to be to not be cropped by edge to edge.
+     * This is done by properly setting insets to be below system bars (status, navigation, etc.)
+     * See [ViewUtils.setSystemBarInsets]
+     * @param activity the Android activity
+     */
+    public static void setEdgeToEdge(Activity activity) {
+        View activityLayoutRootView =
+                ((ViewGroup) activity.getWindow().getDecorView().getRootView()).getChildAt(0);
+        if (activityLayoutRootView != null) {
+            ViewUtil.setSystemBarInsets(activityLayoutRootView);
         }
     }
 }

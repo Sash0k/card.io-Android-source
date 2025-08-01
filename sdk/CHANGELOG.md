@@ -1,6 +1,11 @@
 card.io Android SDK change log and release notes
 ================================================
 
+5.5.1-OS2
+----
+* Remove deprecated onBackPressed and use default back navigation instead, to support predictive back in Android 13+.
+* Fix for Edge-to-Edge in Android 15+.
+
 5.5.1-OS1
 ----
 * Support 16KB page size devices - [PR #1](https://github.com/OutSystems/card.io-Android-source/pull/1)

@@ -39,6 +39,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
+
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.util.Date;
@@ -55,7 +57,7 @@ import io.card.payment.ui.ViewUtil;
  *
  * @version 1.0
  */
-public final class CardIOActivity extends Activity {
+public final class CardIOActivity extends ComponentActivity {
     /**
      * Boolean extra. Optional. Defaults to <code>false</code>. If set, the card will not be scanned
      * with the camera.
@@ -232,12 +234,6 @@ public final class CardIOActivity extends Activity {
      * result code supplied to {@link Activity#onActivityResult(int, int, Intent)} when a scan request completes.
      */
     public static final int RESULT_CARD_INFO = lastResult++;
-
-    /**
-     * result code supplied to {@link Activity#onActivityResult(int, int, Intent)} when the user presses the cancel
-     * button.
-     */
-    public static final int RESULT_ENTRY_CANCELED = lastResult++;
 
     /**
      * result code indicating that scan is not available. Only returned when
@@ -632,7 +628,7 @@ public final class CardIOActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == DATA_ENTRY_REQUEST_ID) {
-            if (resultCode == RESULT_CARD_INFO || resultCode == RESULT_ENTRY_CANCELED
+            if (resultCode == RESULT_CARD_INFO || resultCode == Activity.RESULT_CANCELED
                     || manualEntryFallbackOrForced) {
                 setResultAndFinish(resultCode, data);
             } else {
@@ -640,25 +636,6 @@ public final class CardIOActivity extends Activity {
                     mUIBar.setVisibility(View.VISIBLE);
                 }
             }
-        }
-    }
-
-    /**
-     * This {@link android.app.Activity} overrides back button handling to handle back presses properly given the
-     * various states this {@link android.app.Activity} can be in.
-     * <br><br>
-     * This method is called by Android, never directly by application code.
-     */
-    @Override
-    public void onBackPressed() {
-        if (!manualEntryFallbackOrForced && mOverlay.isAnimating()) {
-            try {
-                restartPreview();
-            } catch (RuntimeException re) {
-                Log.w(TAG, "*** could not return to preview: " + re);
-            }
-        } else if (mCardScanner != null) {
-            super.onBackPressed();
         }
     }
 
@@ -1013,6 +990,8 @@ public final class CardIOActivity extends Activity {
         }
 
         this.setContentView(mMainLayout);
+
+        ViewUtil.setSystemBarInsets(mMainLayout);
     }
 
     private void rotateCustomOverlay(float degrees) {
