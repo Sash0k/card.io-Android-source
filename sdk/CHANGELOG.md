@@ -1,6 +1,10 @@
 card.io Android SDK change log and release notes
 ================================================
 
+5.5.1-OS3
+----
+* Add PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY opt-out for target Android 16 on large screens 
+
 5.5.1-OS2
 ----
 * Remove deprecated onBackPressed and use default back navigation instead, to support predictive back in Android 13+.
