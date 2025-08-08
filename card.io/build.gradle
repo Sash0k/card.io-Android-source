@@ -25,7 +25,7 @@ android {
         buildFeatures {
             buildConfig = true
         }
-        versionName = "5.5.1-OS2"
+        versionName = "5.5.1-OS3"
         buildTypes.configureEach {
             buildConfigField "String", "CARD_IO_SDK_VERSION", "\"$versionName\""
         }
