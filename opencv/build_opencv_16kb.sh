@@ -1,12 +1,8 @@
 # This is a script to build open cv with only the necesssary modules for card io with support for 16KB page size.
 # The reason why we don't use the standard build_sdk.py that comes in the Open CV repository is that there seems to be no way to only build the .so files for the modules we want, resulting in the card io aar file becoming quite large.
 #
-# Built with MAC OS, arm architecture (M1 processor) and NDK 27.
-# Script may take a few minutes to run.
-#
 # Follow the steps below:
-# 1. Clone the open CV repository - I checkout the branch from a fork with the following PR:
-#   https://github.com/opencv/opencv/pull/26057
+# 1. Download OpenCV - https://github.com/opencv/opencv/releases/tag/4.11.0 or later
 # 2. Paste this script at the root folder of the repo
 # 3. Install NDK 27 (easily done from Android Studio -> Tools -> SDK Manager -> SDK Tools -> Check "Show Package Details" in bottom right corner to be able to select a specific NDK version)
 # 4. Set / Confirm the variables in the script
@@ -16,11 +12,11 @@
 
 # IMPORTANT - Step 4. - Set / confirm these variables before running the script
 # location of the NDK 27; If you installed it via Android Studio it should be in a directory inside Android SDK location.
-PATH_TO_NDK_27="/Users/pedrobilro/Library/Android/sdk/ndk/27.0.12077973"
+PATH_TO_NDK_27="/opt/android/sdk/ndk/27.0.12077973"
 # toolchain file to use by cmake; if you are using NDK 27, you can leave it as is
 PATH_TO_CMAKE_TOOLCHAIN="$PATH_TO_NDK_27/build/cmake/android.toolchain.cmake"
 # strip command to decrease size of generated .so files; if you are using a different CPU architecture (e.g. MAC with intel processor) you may need to change this line
-PATH_TO_NDK_STRIP_COMMAND="$PATH_TO_NDK_27/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-strip"
+PATH_TO_NDK_STRIP_COMMAND="$PATH_TO_NDK_27/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip"
 
 # this is the directory where the generated .so files will be at
 mkdir build_opencv_so_files
@@ -33,7 +29,7 @@ build_so_for_architecture()
 
     arch=$1
     cmake_extra_args=$2
-    cmake -DCMAKE_TOOLCHAIN_FILE="$PATH_TO_CMAKE_TOOLCHAIN" -DAndroid_NDK="$PATH_TO_NDK_27" -DANDROID_NATIVE_API_LEVEL=android-21 -DBUILD_JAVA=OFF -DBUILD_ANDROID_EXAMPLES=OFF -DBUILD_ANDROID_PROJECTS=OFF -DANDROID_STL=c++_shared -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=~/opencv_build_16kb/ $cmake_extra_args -DBUILD_LIST=core,imgproc  ..
+    cmake -DCMAKE_TOOLCHAIN_FILE="$PATH_TO_CMAKE_TOOLCHAIN" -DAndroid_NDK="$PATH_TO_NDK_27" -DANDROID_NATIVE_API_LEVEL=android-27 -DBUILD_JAVA=OFF -DBUILD_ANDROID_EXAMPLES=OFF -DBUILD_ANDROID_PROJECTS=OFF -DANDROID_STL=c++_shared -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=~/opencv_build_16kb/ $cmake_extra_args -DBUILD_LIST=core,imgproc  ..
 
     # build .so files
     make opencv_core -j8
